@@ -1,0 +1,16 @@
+{
+  "fetchedAt": null,
+  "prices": {
+    "aeon|pork_belly": { "sale": true, "price": 248, "source": "real" },
+    "aeon|salmon":     { "sale": true, "price": 256, "source": "real" },
+    "aeon|cabbage":    { "sale": true, "price": 176, "source": "real" },
+    "beisia|cabbage":  { "sale": true, "price": 99,  "source": "real" },
+    "beisia|salmon":   { "sale": true, "price": 378, "source": "real" },
+    "beisia|tea":      { "sale": true, "price": 182, "source": "real" },
+    "beisia|yogurt":   { "sale": true, "price": 198, "source": "real" },
+    "beisia|karaage":  { "sale": true, "price": 99,  "source": "real" }
+  },
+  "_log": {
+    "note": "これは初期シードデータ（8/19〜20に手動確認した実データ）。GitHub Actionsが初回実行されると、この内容は自動取得の結果で上書き・追記される。"
+  }
+}

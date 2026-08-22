@@ -1,0 +1,29 @@
+{
+  "stores": [
+    { "id": "everyday", "name": "エブリィビッグデー入野店", "tokubai_url": "https://tokubai.co.jp/エブリィビッグデー/17453" },
+    { "id": "aeon",     "name": "イオン 浜松志都呂店",       "tokubai_url": "https://tokubai.co.jp/イオン/12675" },
+    { "id": "beisia",   "name": "ベイシアフードセンター浜松雄踏店", "tokubai_url": "https://tokubai.co.jp/ベイシアフードセンター/4017" },
+    { "id": "kyorindo", "name": "杏林堂薬局 志都呂店",       "tokubai_url": "https://tokubai.co.jp/杏林堂ドラッグストア/19407" },
+    { "id": "cosmos",   "name": "ドラッグストアコスモス 志都呂店", "tokubai_url": "https://tokubai.co.jp/ドラッグストアコスモス/293876" }
+  ],
+  "items": [
+    { "id": "pork_belly",     "aliases": ["豚バラ薄切り", "豚バラ肉", "豚バラ", "豚ばら", "国産豚バラ"], "base": 158 },
+    { "id": "chicken_breast", "aliases": ["鶏むね肉", "むね肉", "鶏むね"], "base": 68 },
+    { "id": "beef_koma",      "aliases": ["牛こま切れ肉", "牛こま切れ", "牛こま", "こま切れ肉"], "base": 148 },
+    { "id": "salmon",         "aliases": ["銀鮭切身", "銀鮭切り身", "銀鮭", "鮭切身", "鮭切り身", "サーモン切身"], "base": 328 },
+    { "id": "tuna_saku",      "aliases": ["まぐろ柵", "まぐろ刺身", "マグロ刺身", "刺身用まぐろ", "本まぐろ柵"], "base": 498 },
+    { "id": "cabbage",        "aliases": ["キャベツ"], "base": 138 },
+    { "id": "tomato",         "aliases": ["トマト"], "base": 258 },
+    { "id": "potato",         "aliases": ["じゃがいも", "ジャガイモ", "馬鈴薯"], "base": 198 },
+    { "id": "banana",         "aliases": ["バナナ"], "base": 158 },
+    { "id": "egg",            "aliases": ["たまご", "タマゴ", "卵"], "base": 248 },
+    { "id": "milk",           "aliases": ["牛乳"], "base": 198 },
+    { "id": "yogurt",         "aliases": ["ヨーグルト"], "base": 158 },
+    { "id": "natto",          "aliases": ["納豆"], "base": 98 },
+    { "id": "tea",            "aliases": ["緑茶", "麦茶", "お〜いお茶", "お茶"], "base": 148 },
+    { "id": "can_coffee",     "aliases": ["缶コーヒー", "ボスコーヒー", "ジョージア"], "base": 398 },
+    { "id": "bread",          "aliases": ["食パン", "6枚切", "8枚切"], "base": 138 },
+    { "id": "karaage",        "aliases": ["からあげ", "唐揚げ", "から揚げ"], "base": 168 },
+    { "id": "onigiri",        "aliases": ["おにぎり"], "base": 216 }
+  ]
+}
