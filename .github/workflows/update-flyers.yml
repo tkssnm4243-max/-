@@ -1,0 +1,47 @@
+name: Update today's flyer prices
+
+# 毎日 JST 6:30（= UTC 21:30 前日）に自動実行。
+# 手動でテスト実行したいときは、GitHubの「Actions」タブから
+# このワークフローを選んで「Run workflow」でいつでも起動できる。
+on:
+  schedule:
+    - cron: "30 21 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write  # today_prices.json をリポジトリにコミットし直すために必要
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Tesseract OCR (with Japanese language data)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-jpn
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python dependencies
+        run: pip install -r scraper/requirements.txt
+
+      - name: Run the flyer scraper
+        run: python scraper/scrape_flyers.py
+
+      - name: Commit and push today_prices.json if it changed
+        run: |
+          git config user.name "hontoku-flyer-bot"
+          git config user.email "actions@users.noreply.github.com"
+          if git diff --quiet -- today_prices.json; then
+            echo "No changes to today_prices.json — nothing to commit."
+          else
+            git add today_prices.json
+            git commit -m "chore: update today's flyer prices ($(date -u +%Y-%m-%dT%H:%MZ))"
+            git push
+          fi
