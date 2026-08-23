@@ -57,6 +57,13 @@ SLEEP_BETWEEN_REQUESTS = 2.5  # seconds — サーバーに負荷をかけない
 MAX_LEAFLETS_PER_STORE = 2  # 1店舗あたり最大何枚のチラシ画像を見るか
 
 LEAFLET_LINK_RE = re.compile(r"/leaflets/(\d+)")
+# チラシ画像の実URL。/leaflets/{id} の {id} は画像ファイル名と一致するとは限らない
+# （チェーン店は bargain_leaflets/{id}.jpg で一致するが、個人商店枠は
+# bargain_office_leaflets/.../{別ID}.jpg など全く別のファイル名になる）。
+# そのため、ページのimgタグに書かれている実際の画像URL(data-src)を直接拾う。
+LEAFLET_IMAGE_SRC_RE = re.compile(
+    r'data-src="(https://image\.tokubai\.co\.jp/images/bargain[a-z_]*leaflets/[^"]+)"'
+)
 PRICE_RE = re.compile(r"(?:¥|￥)?\s*(\d{2,4})\s*円?")
 
 
@@ -86,17 +93,13 @@ def fetch_store_page(session, url):
     return r.text
 
 
-def extract_leaflet_ids(html):
-    ids = []
-    for m in LEAFLET_LINK_RE.finditer(html):
-        lid = m.group(1)
-        if lid not in ids:
-            ids.append(lid)
-    return ids[:MAX_LEAFLETS_PER_STORE]
-
-
-def leaflet_image_url(leaflet_id):
-    return f"https://image.tokubai.co.jp/images/bargain_leaflets/o=true/{leaflet_id}.jpg"
+def extract_leaflet_image_urls(html):
+    urls = []
+    for m in LEAFLET_IMAGE_SRC_RE.finditer(html):
+        url = m.group(1)
+        if url not in urls:
+            urls.append(url)
+    return urls[:MAX_LEAFLETS_PER_STORE]
 
 
 def download_image(session, url, dest_path):
@@ -237,27 +240,26 @@ def process_store(session, store, items, log):
         log["errors"].append(f"{store_id}: 店舗ページ取得失敗 ({e})")
         return {}
 
-    leaflet_ids = extract_leaflet_ids(html)
-    if not leaflet_ids:
+    image_urls = extract_leaflet_image_urls(html)
+    if not image_urls:
         log["errors"].append(f"{store_id}: チラシ画像リンクが見つからなかった")
         return {}
 
     IMG_CACHE_DIR.mkdir(exist_ok=True)
     store_results = {}
-    for lid in leaflet_ids:
+    for i, img_url in enumerate(image_urls):
         time.sleep(SLEEP_BETWEEN_REQUESTS)
-        img_url = leaflet_image_url(lid)
-        img_path = IMG_CACHE_DIR / f"{store_id}_{lid}.jpg"
+        img_path = IMG_CACHE_DIR / f"{store_id}_{i}.jpg"
         try:
             download_image(session, img_url, img_path)
         except Exception as e:
-            log["errors"].append(f"{store_id}/{lid}: 画像ダウンロード失敗 ({e})")
+            log["errors"].append(f"{store_id}/{img_url}: 画像ダウンロード失敗 ({e})")
             continue
 
         try:
             words = ocr_words(img_path)
         except Exception as e:
-            log["errors"].append(f"{store_id}/{lid}: OCR失敗 ({e})")
+            log["errors"].append(f"{store_id}/{img_url}: OCR失敗 ({e})")
             continue
 
         matched = match_items_spatially(words, items)
