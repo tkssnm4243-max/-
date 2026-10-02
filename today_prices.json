@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-01 09:41 JST",
+  "fetchedAt": "2026-10-02 10:00 JST",
   "prices": {
     "aeon|pork_belly": {
       "sale": true,
@@ -45,8 +45,6 @@
   "_log": {
     "matched_count": 0,
     "unmatched_count": 90,
-    "errors": [
-      "cosmos: チラシ画像リンクが見つからなかった"
-    ]
+    "errors": []
   }
 }
